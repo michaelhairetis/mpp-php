@@ -6,7 +6,7 @@ namespace Mpp\Method;
 
 /**
  * A payment method knows the shape of its own `request` and `payload` objects. It deliberately
- * does not settle anything — that needs chain or processor access and belongs behind
+ * does not settle anything, because that needs chain or processor access. That belongs behind
  * Mpp\Server\Verifier.
  */
 interface PaymentMethod

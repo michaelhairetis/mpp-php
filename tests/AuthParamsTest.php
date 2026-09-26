@@ -58,7 +58,7 @@ final class AuthParamsTest extends TestCase
     }
 
     /**
-     * AGR-2026-102 and AGR-2026-104 — method identifiers are not letters-only.
+     * AGR-2026-102 and AGR-2026-104: method identifiers are not letters-only.
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('methodIdentifiers')]
     public function testMethodIdentifiersWithNonLetters(string $id): void
@@ -102,7 +102,7 @@ final class AuthParamsTest extends TestCase
         self::assertSame('Payment id="a\"b"', AuthParams::format('Payment', ['id' => 'a"b']));
     }
 
-    /** AGR-2026-101 — header field values are ISO-8859-1. */
+    /** AGR-2026-101: header field values are ISO-8859-1. */
     public function testRejectsValuesThatCannotTravelInAHeader(): void
     {
         $this->expectException(ParseException::class);

@@ -1,7 +1,7 @@
 # mpp-php
 
-PHP SDK for the [Machine Payments Protocol](https://mpp.dev) — pay for HTTP resources per request,
-no account or API key set up in advance.
+PHP SDK for the [Machine Payments Protocol](https://mpp.dev). Pay for HTTP resources per request, with no account or
+API key set up in advance.
 
 MPP is an HTTP authentication scheme ([`draft-ryan-httpauth-payment`](https://datatracker.ietf.org/doc/draft-ryan-httpauth-payment/)),
 so this library is built like one: no framework dependency, PSR-7/15/18 throughout.
@@ -23,8 +23,8 @@ Requires PHP 8.2+.
 
 ## Selling
 
-`PaymentGate` issues challenges and checks credentials. It does not settle — confirming a payment
-landed needs chain access, so that sits behind `Verifier`, which you implement.
+`PaymentGate` issues challenges and checks credentials. It does not settle. Confirming a payment landed
+needs chain access, so that sits behind `Verifier`, which you implement.
 
 ```php
 use Mpp\ChallengeBinding;
@@ -86,7 +86,7 @@ $challenge = $binding->issue($realm, 'tempo', 'charge', $requestB64);
 $binding->verify($challenge);
 ```
 
-`description` is deliberately outside the binding — it is display only.
+`description` is deliberately outside the binding. It is display only.
 
 ## What's here
 

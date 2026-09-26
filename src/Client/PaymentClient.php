@@ -30,7 +30,7 @@ final class PaymentClient implements ClientInterface
     {
         $response = $this->inner->sendRequest($request);
 
-        // A server may re-challenge — for a fresh nonce, a changed price, a retryable failure —
+        // A server may re-challenge for a fresh nonce, a changed price or a retryable failure,
         // so keep paying until it stops asking or we hit the ceiling.
         for ($attempt = 0; $attempt < $this->maxPayments; ++$attempt) {
             if ($response->getStatusCode() !== 402) {

@@ -10,8 +10,8 @@ namespace Mpp;
  *
  * Slots are positional and always present, so (expires set, no digest) and (no expires, digest
  * set) cannot collide. `header` is inserted only when the parameter is present, which keeps the
- * input stable for challenges issued before it existed. `description` is excluded — it is display
- * only and never used for verification.
+ * input stable for challenges issued before it existed. `description` is excluded because it is
+ * display only and never used for verification.
  */
 final class ChallengeBinding
 {

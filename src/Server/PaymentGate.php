@@ -60,8 +60,8 @@ final class PaymentGate
     }
 
     /**
-     * Protocol checks first, settlement last — an expired or tampered credential should never
-     * reach the chain.
+     * Protocol checks first, settlement last, so an expired or tampered credential never
+     * reaches the chain.
      *
      * @param string $headerValue the raw Authorization or Payment-Authorization value
      */

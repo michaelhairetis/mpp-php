@@ -9,7 +9,7 @@ use Mpp\Exception\ParseException;
 /**
  * The `Payment <base64url>` credential a client sends on the retry.
  *
- * The echoed challenge must survive the round trip byte for byte — the server re-derives the
+ * The echoed challenge must survive the round trip byte for byte, because the server re-derives the
  * binding from it, so anything altered in transit fails verification.
  */
 final class Credential

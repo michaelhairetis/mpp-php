@@ -21,7 +21,7 @@ final class Jcs
 
     /**
      * Force object output. PHP cannot tell `{}` from `[]` once json_decode has run, and the
-     * protocol's request, opaque and payload fields are always objects — so the caller says so.
+     * protocol's request, opaque and payload fields are always objects, so the caller says so.
      *
      * @param array<array-key, mixed>|object $value
      */

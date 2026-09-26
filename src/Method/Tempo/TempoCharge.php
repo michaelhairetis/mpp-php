@@ -8,7 +8,7 @@ use Mpp\Exception\ParseException;
 use Mpp\Method\PaymentMethod;
 
 /**
- * Tempo `charge` — draft-tempo-charge-00.
+ * Tempo `charge`, draft-tempo-charge-00.
  */
 final class TempoCharge implements PaymentMethod
 {

@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Mpp\Exception\ParseException;
 
 /**
- * The `Payment-Receipt` header. Only ever issued on a 2xx — failures carry a fresh challenge and
+ * The `Payment-Receipt` header. Only ever issued on a 2xx. Failures carry a fresh challenge and
  * RFC 9457 problem details instead, so there is no failure status to represent here.
  */
 final class Receipt

@@ -79,7 +79,7 @@ final class PaymentMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        // RFC 9457 — say why the previous attempt failed without leaking verifier internals.
+        // RFC 9457: say why the previous attempt failed without leaking verifier internals.
         $problem = json_encode([
             'type' => $failure->problemType,
             'title' => 'Payment verification failed',

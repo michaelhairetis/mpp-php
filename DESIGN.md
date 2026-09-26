@@ -1,4 +1,4 @@
-# mpp-php — design notes
+# mpp-php design notes
 
 PHP SDK for the Machine Payments Protocol. Core only: no framework bridges until the core is solid.
 
@@ -24,7 +24,7 @@ nearintents) → **Extensions** (discovery, MCP transport).
 
 ## Wire surface the core must cover
 
-**Challenge** — `WWW-Authenticate: Payment` with RFC 9110 auth-params.
+**Challenge**: `WWW-Authenticate: Payment` with RFC 9110 auth-params.
 
 | Param | Req | Notes |
 |---|---|---|
@@ -41,40 +41,40 @@ nearintents) → **Extensions** (discovery, MCP transport).
 
 Unknown params are ignored.
 
-**Credential** — `Payment <base64url-nopad>` of `{challenge, source?, payload}`. `challenge` echoes
+**Credential**: `Payment <base64url-nopad>` of `{challenge, source?, payload}`. `challenge` echoes
 the challenge params verbatim; `header` is echoed only if the challenge carried it.
 
-**Receipt** — `Payment-Receipt: <base64url-nopad>` of `{status, method, timestamp, reference}`.
+**Receipt**: `Payment-Receipt: <base64url-nopad>` of `{status, method, timestamp, reference}`.
 `status` is always `"success"`; never emitted on error responses. Failures use 402 + a fresh
 challenge + RFC 9457 problem details.
 
 ## Primitives, in dependency order
 
-1. `Base64Url` — RFC 4648 §5, no padding. Trivial, everything depends on it.
-2. `Jcs` — RFC 8785 canonical JSON. Keys sorted by UTF-16 code unit, no insignificant whitespace,
-   ECMAScript number formatting. Required for challenge binding to interoperate — different
-   serialization orders produce different HMACs.
-3. `AuthParams` — RFC 9110 §11 parser/formatter. token / quoted-string, BWS, OWS, comma-separated.
+1. `Base64Url`: RFC 4648 §5, no padding. Trivial, everything depends on it.
+2. `Jcs`: RFC 8785 canonical JSON. Keys sorted by UTF-16 code unit, no insignificant whitespace,
+   ECMAScript number formatting. Required for challenge binding to interoperate, because
+   different serialization orders produce different HMACs.
+3. `AuthParams`: RFC 9110 §11 parser/formatter. token / quoted-string, BWS, OWS, comma-separated.
    The subtle one; see conformance notes below.
-4. `ContentDigest` — RFC 9530, `sha-256=:<base64>:`.
-5. `Timestamps` — RFC 3339 parse and expiry comparison.
+4. `ContentDigest`: RFC 9530, `sha-256=:<base64>:`.
+5. `Timestamps`: RFC 3339 parse and expiry comparison.
 
 Then `Challenge`, `Credential`, `Receipt`, the `PaymentMethod` interface, and server/client halves.
 
-## Conformance — steal the bugs other SDKs already hit
+## Conformance: steal the bugs other SDKs already hit
 
 `tempoxyz/mpp-tools` runs a conformance suite ("Agricola") against every SDK. Its open findings are
 a free spec for what to get right on day one:
 
-- **AGR-2026-103** — challenge auth-param names parsed case-sensitively. They are case-insensitive.
-- **AGR-2026-102** — parser rejects canonical method identifiers containing digits or separators.
-- **AGR-2026-104** — valid lowercase method identifiers with non-letter characters rejected.
-- **AGR-2026-101** — challenge formatting emits non-Latin-1 text unusable as an HTTP header value.
-- **AGR-2026-105/106/107** — automatic client: silently returns an unhandleable initial 402; handles
+- **AGR-2026-103**: challenge auth-param names parsed case-sensitively. They are case-insensitive.
+- **AGR-2026-102**: parser rejects canonical method identifiers containing digits or separators.
+- **AGR-2026-104**: valid lowercase method identifiers with non-letter characters rejected.
+- **AGR-2026-101**: challenge formatting emits non-Latin-1 text unusable as an HTTP header value.
+- **AGR-2026-105/106/107**: automatic client: silently returns an unhandleable initial 402; handles
   only one retry; ignores payment preference ordering.
-- **mpp-go #151** — repeated same-scheme `WWW-Authenticate` challenges become unparseable once
+- **mpp-go #151**: repeated same-scheme `WWW-Authenticate` challenges become unparseable once
   folded into one header line.
-- **mpp-tools #158** — duplicate-parameter detection misfires when a quoted value contains a comma.
+- **mpp-tools #158**: duplicate-parameter detection misfires when a quoted value contains a comma.
 
 Every one of these belongs in the test suite before the corresponding code is written.
 
