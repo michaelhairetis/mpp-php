@@ -18,7 +18,11 @@ final class Base64Url
 
     public static function decode(string $value): string
     {
-        if ($value === '' || preg_match('/^[A-Za-z0-9\-_]+$/', $value) !== 1) {
+        if ($value === '') {
+            return '';
+        }
+
+        if (preg_match('/^[A-Za-z0-9\-_]+$/', $value) !== 1) {
             throw new ParseException('value is not base64url without padding');
         }
 
