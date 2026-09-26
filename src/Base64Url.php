@@ -35,11 +35,14 @@ final class Base64Url
     }
 
     /**
-     * Encode a value as JCS JSON, then base64url. Used for `request` and `opaque`.
+     * Encode an object as JCS JSON, then base64url. Used for `request`, `opaque` and credentials,
+     * all of which are objects on the wire even when empty.
+     *
+     * @param array<array-key, mixed>|object $value
      */
-    public static function encodeJson(mixed $value): string
+    public static function encodeJson(array|object $value): string
     {
-        return self::encode(Jcs::encode($value));
+        return self::encode(Jcs::encodeObject($value));
     }
 
     /**
@@ -48,7 +51,9 @@ final class Base64Url
     public static function decodeJsonObject(string $value): array
     {
         $decoded = json_decode(self::decode($value), true, 64, JSON_THROW_ON_ERROR);
-        if (!is_array($decoded) || array_is_list($decoded)) {
+
+        // [] is how PHP represents an empty JSON object, so only a populated list is an error.
+        if (!is_array($decoded) || ($decoded !== [] && array_is_list($decoded))) {
             throw new ParseException('expected a JSON object');
         }
 

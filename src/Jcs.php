@@ -19,6 +19,17 @@ final class Jcs
         return self::serialize($value);
     }
 
+    /**
+     * Force object output. PHP cannot tell `{}` from `[]` once json_decode has run, and the
+     * protocol's request, opaque and payload fields are always objects — so the caller says so.
+     *
+     * @param array<array-key, mixed>|object $value
+     */
+    public static function encodeObject(array|object $value): string
+    {
+        return self::object(is_object($value) ? get_object_vars($value) : $value);
+    }
+
     private static function serialize(mixed $value): string
     {
         return match (true) {
@@ -27,6 +38,7 @@ final class Jcs
             is_int($value) => (string) $value,
             is_float($value) => self::number($value),
             is_string($value) => self::string($value),
+            is_object($value) => self::object(get_object_vars($value)),
             is_array($value) => array_is_list($value) ? self::list($value) : self::object($value),
             default => throw new ParseException('cannot canonicalize ' . get_debug_type($value)),
         };

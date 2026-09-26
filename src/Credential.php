@@ -64,11 +64,12 @@ final class Credential
 
     public function toHeader(): string
     {
-        $body = ['challenge' => $this->challenge->toParams()];
+        // Cast to object so an empty payload serializes as {} rather than [].
+        $body = ['challenge' => (object) $this->challenge->toParams()];
         if ($this->source !== null) {
             $body['source'] = $this->source;
         }
-        $body['payload'] = $this->payload;
+        $body['payload'] = (object) $this->payload;
 
         return Challenge::SCHEME . ' ' . Base64Url::encodeJson($body);
     }
